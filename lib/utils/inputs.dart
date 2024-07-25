@@ -76,19 +76,28 @@ Widget buildTextField({
   required String label,
   IconData? icon,
   required TextEditingController controller,
+  required void Function(String) onChanged,
   required String? Function(String?) validator,
   TextInputType keyboardType = TextInputType.text,
 }) {
   return Directionality(
     textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
     child: TextFormField(
+      onChanged: onChanged,
       validator: validator,
       controller: controller,
       keyboardType: keyboardType,
       decoration: InputDecoration(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25),
+          borderSide: const BorderSide(
+            color: Colors.black,
+            width: 2.0,
+          ),
+        ),
         labelText: label,
         prefixIcon: icon != null ? Icon(icon) : null,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
       ),
     ),
   );

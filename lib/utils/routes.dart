@@ -1,13 +1,18 @@
+import 'package:e_commerce/features/products_management/model/product.dart';
 import 'package:e_commerce/features/products_management/view/screens/home_screen.dart';
+import 'package:e_commerce/features/products_management/view/screens/product_datails.dart';
 import 'package:e_commerce/features/user_management/view/screens/register.dart';
 import 'package:flutter/material.dart';
 
+import '../features/products_management/view/screens/main_screen.dart';
 import '../features/user_management/view/screens/login.dart';
 
 class AppRoutes {
   static const String home = '/';
   static const String login = '/login';
   static const String register = '/register';
+  static const String main = '/main';
+  static const String productDetail = '/productDetail';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -17,10 +22,14 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
       case home:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
-
-      // case productDetail:
-      //   var productId = settings.arguments as int;
-      //   return MaterialPageRoute(builder: (_) => ProductDetailView(productId: productId));
+      case main:
+        return MaterialPageRoute(builder: (_) => const MainScreen());
+      case productDetail:
+        Product product = settings.arguments as Product;
+        return MaterialPageRoute(
+            builder: (_) => ProductDetails(
+                  product: product,
+                ));
 
       default:
         return MaterialPageRoute(

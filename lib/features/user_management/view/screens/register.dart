@@ -6,6 +6,7 @@ import 'package:toastification/toastification.dart';
 
 import '../../../../utils/buttons.dart';
 import '../../../../utils/inputs.dart';
+import '../../../../utils/routes.dart';
 import '../../../../utils/toast.dart';
 import '../../../../utils/validator.dart';
 
@@ -29,6 +30,11 @@ class RegisterScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is RegisterSuccess) {
           showToast(context, "Register Success ", ToastificationType.success);
+          Navigator.pushReplacementNamed(
+            context,
+            AppRoutes.home,
+            // arguments: index, // Pass the product ID as an argument
+          );
         } else if (state is RegisterFailure) {
           showToast(context, state.message, ToastificationType.error);
         }
@@ -70,6 +76,7 @@ class RegisterScreen extends StatelessWidget {
                         children: [
                           Expanded(
                               child: buildTextField(
+                            onChanged: (p0) {},
                             controller: firstNameController,
                             icon: Icons.person,
                             label: "First Name",
@@ -80,6 +87,7 @@ class RegisterScreen extends StatelessWidget {
                           ),
                           Expanded(
                               child: buildTextField(
+                            onChanged: (p0) {},
                             controller: lastNameController,
                             icon: Icons.person,
                             label: "Last Name",
@@ -216,7 +224,10 @@ class RegisterScreen extends StatelessWidget {
                           buildTextButton(
                               label: "Login",
                               onPressed: () {
-                                // Navigator.pushNamed(context, route);
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  AppRoutes.login,
+                                );
                               }),
                         ],
                       )

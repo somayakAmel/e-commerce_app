@@ -1,4 +1,3 @@
-import 'package:e_commerce/features/user_management/view/screens/register.dart';
 import 'package:e_commerce/features/user_management/view_model/auth_cubits/login/login_cubit.dart';
 import 'package:e_commerce/utils/inputs.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../../utils/buttons.dart';
+import '../../../../utils/routes.dart';
 import '../../../../utils/toast.dart';
 import '../../../../utils/validator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -23,6 +23,7 @@ class LoginScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is LoginLoading) {
         } else if (state is LoginSuccess) {
+          Navigator.pushReplacementNamed(context, AppRoutes.home);
           showToast(context, "Login Success ", ToastificationType.success);
 
           // replacementNavigate(context, const HomeScreen());
@@ -171,11 +172,10 @@ class LoginScreen extends StatelessWidget {
                           buildTextButton(
                               label: "Register",
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const RegisterScreen()));
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  AppRoutes.register,
+                                );
                               }),
                         ],
                       )

@@ -1,4 +1,4 @@
-import 'package:e_commerce/features/user_management/view/screens/login.dart';
+import 'package:e_commerce/features/products_management/view_model/get_product/get_product_cubit.dart';
 import 'package:e_commerce/utils/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -32,12 +32,13 @@ class MyApp extends StatelessWidget {
           create: (context) => LoginCubit(),
         ),
         BlocProvider(create: (context) => RegisterCubit()),
+        BlocProvider(create: (context) => GetProductCubit()..getProducts()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: CacheHelper.getData(key: 'uId') == null
             ? AppRoutes.login
-            : AppRoutes.home,
+            : AppRoutes.main,
         onGenerateRoute: AppRoutes.generateRoute,
       ),
     );
