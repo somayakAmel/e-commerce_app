@@ -12,7 +12,6 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(item.price.truncate());
     return Container(
         decoration: BoxDecoration(
           color: Colors.white,

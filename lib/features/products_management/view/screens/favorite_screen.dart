@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../../utils/dialog.dart';
+import '../../../../utils/routes.dart';
 import '../../model/product.dart';
 
 class FavoriteScreen extends StatelessWidget {
@@ -75,77 +76,88 @@ class FavoriteScreen extends StatelessWidget {
                 child: ListView.builder(
                     itemCount: products.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 120,
-                                  height: 120,
-                                  child: Image.asset(
-                                      "assets/images/${products[index].productId}1.jpg"),
+                      return InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.productDetail,
+                              arguments: products[index]);
+                        },
+                        child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 25),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(products[index].name,
-                                          style: const TextStyle(
-                                              color: Colors.black87,
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w400)),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "\$${products[index].price.truncate()}",
-                                            maxLines: 1,
+                              ],
+                            ),
+                            child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 120,
+                                    height: 120,
+                                    child: Image.asset(
+                                        "assets/images/${products[index].productId}1.jpg"),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 25),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(products[index].name,
                                             style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                                color: Colors.black87,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w400)),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "\$${products[index].price.truncate()}",
+                                              maxLines: 1,
+                                              style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                const Spacer(),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(right: 16, top: 25),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.delete_outline),
-                                        onPressed: () {
-                                          ProductDetailsCubit.get(context)
-                                              .removeFavorite(products[index]);
-                                        },
-                                      ),
-                                    ],
+                                  const Spacer(),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 16, top: 25),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        IconButton(
+                                          icon:
+                                              const Icon(Icons.delete_outline),
+                                          onPressed: () {
+                                            ProductDetailsCubit.get(context)
+                                                .removeFavorite(
+                                                    products[index]);
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ]));
+                                ])),
+                      );
                     }),
               ),
             ],

@@ -1,3 +1,4 @@
+import 'package:e_commerce/features/payment/payment_Screen.dart';
 import 'package:e_commerce/features/products_management/model/product.dart';
 import 'package:e_commerce/features/products_management/view/screens/home_screen.dart';
 import 'package:e_commerce/features/products_management/view/screens/product_details.dart';
@@ -19,6 +20,7 @@ class AppRoutes {
   static const String productDetail = '/productDetail';
   static const String cartView = '/cartView';
   static const String favorite = '/favorite';
+  static const String payment = '/payment';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -42,6 +44,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const CartScreen());
       case favorite:
         return MaterialPageRoute(builder: (_) => const FavoriteScreen());
+      case payment:
+        return MaterialPageRoute(builder: (_) => const PaymentScreen());
 
       default:
         return MaterialPageRoute(

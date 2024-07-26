@@ -4,10 +4,7 @@ sealed class LoginState {}
 
 final class UserLoginInitial extends LoginState {}
 
-class LoginSuccess extends LoginState {
-  final String uId;
-  LoginSuccess(this.uId);
-}
+class LoginSuccess extends LoginState {}
 
 class LoginFailure extends LoginState {
   final String message;

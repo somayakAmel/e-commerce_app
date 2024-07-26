@@ -5,6 +5,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../../utils/buttons.dart';
+import '../../../../utils/cache_helper.dart';
 import '../../../../utils/inputs.dart';
 import '../../../../utils/routes.dart';
 import '../../../../utils/toast.dart';
@@ -174,7 +175,12 @@ class RegisterScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: buildOptionButton(
                           src: 'google',
-                          onTap: () async {},
+                          onTap: () async {
+                            var value = await RegisterCubit.get(context)
+                                .signInWithGoogle();
+                            var uId = value.user!.uid;
+                            CacheHelper.saveData(key: "uId", value: uId);
+                          },
                         ),
                       ),
                       RichText(

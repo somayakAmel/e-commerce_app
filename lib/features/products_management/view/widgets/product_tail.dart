@@ -9,7 +9,7 @@ import '../../model/product.dart';
 class ProductTile extends StatelessWidget {
   final Product product;
 
-  const ProductTile({required this.product});
+  const ProductTile({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class ProductTile extends StatelessWidget {
                           const SizedBox(
                               height: 100,
                               width: 100,
-                              child: const Icon(Icons.error)),
+                              child: Icon(Icons.error)),
                     )),
               ),
               const SizedBox(

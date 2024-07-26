@@ -10,7 +10,6 @@ class ProductsService {
     try {
       var response = await dio
           .get("https://fake-store-api.mock.beeceptor.com/api/products");
-      print(">>>>>>>>>>>>>>>>>>>>>>${response.data}");
       List<dynamic> jsonData = response.data;
       List<Product> products = [];
 

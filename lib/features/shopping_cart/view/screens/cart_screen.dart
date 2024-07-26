@@ -6,6 +6,7 @@ import 'package:toastification/toastification.dart';
 
 import '../../../../utils/buttons.dart';
 import '../../../../utils/dialog.dart';
+import '../../../../utils/routes.dart';
 import '../../../../utils/toast.dart';
 import '../widgets/cart_item.dart';
 
@@ -83,11 +84,12 @@ class CartScreen extends StatelessWidget {
                         background: Colors.black,
                         radius: 20,
                         width: 300,
-                        fontFamily: "ProtestRiot-Regular",
                         text:
                             "\$${CartCubit.get(context).totalPrice.truncate()}  Check Out Now",
                         fontSize: 20,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRoutes.payment);
+                        },
                       ),
                     ],
                   ),

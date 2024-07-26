@@ -17,7 +17,7 @@ class _ProductImageState extends State<ProductImage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 400.0,
       child: Stack(
         children: [

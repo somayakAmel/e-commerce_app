@@ -1,4 +1,5 @@
 import 'package:e_commerce/features/user_management/view_model/auth_cubits/login/login_cubit.dart';
+import 'package:e_commerce/utils/cache_helper.dart';
 import 'package:e_commerce/utils/inputs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -121,7 +122,12 @@ class LoginScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: buildOptionButton(
                           src: 'google',
-                          onTap: () async {},
+                          onTap: () async {
+                            var value = await LoginCubit.get(context)
+                                .signInWithGoogle();
+                            var uId = value.user!.uid;
+                            CacheHelper.saveData(key: "uId", value: uId);
+                          },
                         ),
                       ),
                       RichText(
