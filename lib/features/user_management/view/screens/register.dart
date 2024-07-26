@@ -33,7 +33,7 @@ class RegisterScreen extends StatelessWidget {
           showToast(context, "Register Success ", ToastificationType.success);
           Navigator.pushReplacementNamed(
             context,
-            AppRoutes.home,
+            AppRoutes.main,
             // arguments: index, // Pass the product ID as an argument
           );
         } else if (state is RegisterFailure) {

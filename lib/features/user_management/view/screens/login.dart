@@ -24,7 +24,7 @@ class LoginScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is LoginLoading) {
         } else if (state is LoginSuccess) {
-          Navigator.pushReplacementNamed(context, AppRoutes.home);
+          Navigator.pushReplacementNamed(context, AppRoutes.main);
           showToast(context, "Login Success ", ToastificationType.success);
 
           // replacementNavigate(context, const HomeScreen());
