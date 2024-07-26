@@ -12,6 +12,7 @@ class GetProductCubit extends Cubit<GetProductState> {
   bool isLoading = false;
   static GetProductCubit get(context) => BlocProvider.of(context);
   List<Product> products = [];
+  List<Product> firstPartOfProducts = [];
   List<Product> productsShown = [];
 
   void getProducts() async {
@@ -19,7 +20,7 @@ class GetProductCubit extends Cubit<GetProductState> {
       emit(GetProductLoading());
       isLoading = true;
       products = await ProductsService(Dio()).getProducts();
-      productsShown = products;
+      productsShown = products.sublist(0, 6);
       emit(GetProductSuccess());
       isLoading = false;
     } on Exception catch (e) {
@@ -40,6 +41,11 @@ class GetProductCubit extends Cubit<GetProductState> {
           .toList();
     }
 
+    emit(GetProductSuccess());
+  }
+
+  void loadMoreProducts() {
+    productsShown = products;
     emit(GetProductSuccess());
   }
 }

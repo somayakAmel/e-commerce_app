@@ -3,7 +3,8 @@ import 'package:e_commerce/utils/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'features/products_management/view_model/product_details/product_details_cubit.dart';
+import 'features/shopping_cart/view_model/cart/cart_cubit.dart';
 import 'features/user_management/view_model/auth_cubits/login/login_cubit.dart';
 import 'features/user_management/view_model/auth_cubits/register/register_cubit.dart';
 import 'firebase_options.dart';
@@ -33,12 +34,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => RegisterCubit()),
         BlocProvider(create: (context) => GetProductCubit()..getProducts()),
+        BlocProvider(create: (context) => CartCubit()),
+        BlocProvider(create: (context) => ProductDetailsCubit()),
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: CacheHelper.getData(key: 'uId') == null
-            ? AppRoutes.login
-            : AppRoutes.main,
+        initialRoute: AppRoutes.splash,
         onGenerateRoute: AppRoutes.generateRoute,
       ),
     );

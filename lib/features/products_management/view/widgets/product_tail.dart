@@ -1,5 +1,8 @@
+import 'package:e_commerce/features/shopping_cart/view_model/cart/cart_cubit.dart';
 import 'package:e_commerce/utils/routes.dart';
+import 'package:e_commerce/utils/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../model/product.dart';
 
@@ -93,44 +96,20 @@ class ProductTile extends StatelessWidget {
                   color: Colors.white,
                 ),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    CartCubit.get(context).addItem(
+                        product.productId.toString(),
+                        product.name.toString(),
+                        product.price -
+                            product.price * product.discount / 100.toDouble(),
+                        1);
+
+                    showToast(
+                        context, "Added to cart", ToastificationType.success);
+                  },
                   icon: const Icon(Icons.add_shopping_cart_rounded),
                 )))
       ]),
     );
-
-    //    Card(
-
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         Image.network(
-    //             "https://cdn.thewirecutter.com/wp-content/media/2023/06/bestlaptops-2048px-9765.jpg",
-    //             fit: BoxFit.cover),
-    //         Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: Column(
-    //             crossAxisAlignment: CrossAxisAlignment.start,
-    //             children: [
-    //               Text(
-    //                 product.name,
-    //                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-    //               ),
-    //               SizedBox(height: 4),
-    //               Text(
-    //                 product.description,
-    //                 style: TextStyle(fontSize: 12),
-    //               ),
-    //               SizedBox(height: 4),
-    //               Text(
-    //                 '\$${product.price.toString()}',
-    //                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   );
   }
 }

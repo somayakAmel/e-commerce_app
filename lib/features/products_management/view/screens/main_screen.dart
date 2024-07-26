@@ -1,4 +1,6 @@
+import 'package:e_commerce/features/products_management/view/screens/favorite_screen.dart';
 import 'package:e_commerce/features/products_management/view/screens/home_screen.dart';
+import 'package:e_commerce/features/shopping_cart/view/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -13,8 +15,8 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> screens = [
     const HomeScreen(),
-    const HomeScreen(),
-    const HomeScreen(),
+    const CartScreen(),
+    const FavoriteScreen(),
   ];
 
   void onTabTapped(int index) {
@@ -63,8 +65,8 @@ class _MainScreenState extends State<MainScreen> {
                       label: 'Cart',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.person),
-                      label: 'Account',
+                      icon: Icon(Icons.favorite),
+                      label: 'Favorite',
                     ),
                   ],
                 ))));

@@ -14,3 +14,15 @@ final class GetProductFailure extends GetProductState {
 
   GetProductFailure({required this.message});
 }
+
+final class PaginationLoading extends GetProductState {
+  final List? products;
+
+  PaginationLoading({required this.products});
+}
+
+final class PaginationLoaded extends GetProductState {
+  final List? products;
+
+  PaginationLoaded({required this.products});
+}

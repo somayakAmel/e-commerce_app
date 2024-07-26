@@ -1,8 +1,10 @@
-import 'package:e_commerce/features/products_management/view/widgets/product_list.dart';
 import 'package:e_commerce/features/products_management/view_model/get_product/get_product_cubit.dart';
-import 'package:e_commerce/utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:e_commerce/utils/inputs.dart';
+import '../../model/product.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../widgets/product_list.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -34,6 +36,18 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             )),
-        body: productList());
+        body: BlocConsumer<GetProductCubit, GetProductState>(
+            listener: (context, state) {
+          if (state is GetProductFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Error in fetching products"),
+              ),
+            );
+          } else if (state is GetProductSuccess) {}
+        }, builder: (context, state) {
+          List<Product> products = GetProductCubit.get(context).productsShown;
+          return ProductsList(products: products);
+        }));
   }
 }

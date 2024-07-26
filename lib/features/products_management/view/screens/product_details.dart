@@ -1,6 +1,11 @@
 import 'package:e_commerce/features/products_management/model/product.dart';
+import 'package:e_commerce/features/products_management/view_model/product_details/product_details_cubit.dart';
+import 'package:e_commerce/features/shopping_cart/view_model/cart/cart_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
 
+import '../../../../utils/toast.dart';
 import '../widgets/product_images.dart';
 
 class ProductDetails extends StatelessWidget {
@@ -8,24 +13,10 @@ class ProductDetails extends StatelessWidget {
 
   final Product product;
 
-  double calculateRating() {
-    if (product.reviews != []) {
-      double sum = 0.0;
-      double result = 0.0;
-      for (int i = 0; i < product.reviews!.length; i++) {
-        sum += product.reviews![i].rating;
-        if (i == product.reviews!.length - 1) {
-          result = sum / product.reviews!.length;
-        }
-      }
-      return result;
-    } else {
-      return 0.0;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    double rating = ProductDetailsCubit.get(context).calculateRating(product);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -41,15 +32,50 @@ class ProductDetails extends StatelessWidget {
                 'assets/images/${product.productId.toString()}3.jpg',
                 'assets/images/${product.productId.toString()}4.jpg',
               ],
+              product: product,
             ),
             const SizedBox(height: 16.0),
             // Details Section
-            Text(
-              product.name,
-              style: const TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.name,
+                        style: const TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+                  builder: (context, state) {
+                    return Row(children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_drop_up),
+                        onPressed: () {
+                          ProductDetailsCubit.get(context).incrementQuantity();
+                        },
+                      ),
+                      Text(
+                        ProductDetailsCubit.get(context).quantity.toString(),
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onPressed: () {
+                          ProductDetailsCubit.get(context).decrementQuantity();
+                        },
+                      ),
+                    ]);
+                  },
+                ),
+              ],
             ),
             const SizedBox(height: 8.0),
             Text(
@@ -58,14 +84,14 @@ class ProductDetails extends StatelessWidget {
                 fontSize: 16.0,
               ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 21.0),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: List.generate(5, (index) {
                 return Icon(
-                  index + 1 < calculateRating()
+                  index + 1 < rating
                       ? Icons.star
-                      : index + 1 == calculateRating() + 0.5
+                      : index + 1 == rating + 0.5
                           ? Icons.star_half
                           : Icons.star_border,
                   color: Colors.amber,
@@ -97,13 +123,29 @@ class ProductDetails extends StatelessWidget {
                   ),
                   const Spacer(),
                   MaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (product.availability == false) {
+                        // product unavailable!
+                        showToast(context, "Out of stock",
+                            ToastificationType.warning);
+                      } else {
+                        // Add to cart
+                        CartCubit.get(context).addItem(
+                            product.productId.toString(),
+                            product.name,
+                            product.price,
+                            ProductDetailsCubit.get(context).quantity);
+                        showToast(context, "Added to cart",
+                            ToastificationType.success);
+                        ProductDetailsCubit.get(context).resetQuantity();
+                      }
+                    },
                     minWidth: 230,
                     height: 46,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25.0),
                     ),
-                    color: Colors.black,
+                    color: product.availability ? Colors.black : Colors.grey,
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

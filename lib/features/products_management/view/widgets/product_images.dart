@@ -1,8 +1,12 @@
+import 'package:e_commerce/features/products_management/view_model/product_details/product_details_cubit.dart';
 import 'package:flutter/material.dart';
 
+import '../../model/product.dart';
+
 class ProductImage extends StatefulWidget {
-  const ProductImage({super.key, required this.images});
+  const ProductImage({super.key, required this.images, required this.product});
   final List images;
+  final Product product;
 
   @override
   State<ProductImage> createState() => _ProductImageState();
@@ -58,7 +62,15 @@ class _ProductImageState extends State<ProductImage> {
               top: 10.0,
               right: 10.0,
               child: IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.favorite))),
+                  onPressed: () {
+                    ProductDetailsCubit.get(context)
+                        .toggleFavorite(widget.product);
+                    setState(() {});
+                  },
+                  icon: ProductDetailsCubit.get(context)
+                          .isFavoriteOrNot(widget.product)
+                      ? const Icon(Icons.favorite)
+                      : const Icon(Icons.favorite_border))),
           Positioned(
               top: 10.0,
               left: 5.0,
