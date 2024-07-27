@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     GetProductCubit.get(context).searchActive = false;
     GetProductCubit.get(context).productsShown =
-        GetProductCubit.get(context).products;
+        GetProductCubit.get(context).products.sublist(0, 6);
     _scrollController.addListener(_scrollListener);
   }
 
