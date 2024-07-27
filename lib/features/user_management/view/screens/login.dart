@@ -26,10 +26,8 @@ class LoginScreen extends StatelessWidget {
         } else if (state is LoginSuccess) {
           Navigator.pushReplacementNamed(context, AppRoutes.main);
           showToast(context, "Login Success ", ToastificationType.success);
-
-          // replacementNavigate(context, const HomeScreen());
         } else if (state is LoginFailure) {
-          showToast(context, state.message, ToastificationType.error);
+          showToast(context, "Error in login", ToastificationType.error);
         }
       },
       builder: (context, state) {

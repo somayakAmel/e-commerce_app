@@ -37,7 +37,7 @@ class RegisterScreen extends StatelessWidget {
             // arguments: index, // Pass the product ID as an argument
           );
         } else if (state is RegisterFailure) {
-          showToast(context, state.message, ToastificationType.error);
+          showToast(context, "Error in register", ToastificationType.error);
         }
       },
       builder: (context, state) {
