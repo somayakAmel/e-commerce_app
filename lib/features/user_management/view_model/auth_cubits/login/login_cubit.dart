@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce/features/products_management/view_model/product_details/product_details_cubit.dart';
+import 'package:e_commerce/features/shopping_cart/view_model/cart/cart_cubit.dart';
 import 'package:e_commerce/utils/validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,6 +44,8 @@ class LoginCubit extends Cubit<LoginState> {
       emit(SignOutLoading());
       await FirebaseAuth.instance.signOut();
       CacheHelper.removeData(key: "uId");
+      CartCubit().clearCart();
+      ProductDetailsCubit().clearFavorite();
 
       emit(SignOutSuccess());
     } catch (e) {
