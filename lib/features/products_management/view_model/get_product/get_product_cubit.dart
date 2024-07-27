@@ -52,4 +52,11 @@ class GetProductCubit extends Cubit<GetProductState> {
     productsShown = products;
     emit(GetProductSuccess());
   }
+
+  void resetList() {
+    productsShown = [];
+    for (int i = 0; i < products.length - 3; i++) {
+      productsShown.add(products[i]);
+    }
+  }
 }

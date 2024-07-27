@@ -26,8 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     GetProductCubit.get(context).searchActive = false;
-    GetProductCubit.get(context).productsShown =
-        GetProductCubit.get(context).products.sublist(0, 6);
+    GetProductCubit.get(context).resetList();
     _scrollController.addListener(_scrollListener);
   }
 
@@ -107,44 +106,52 @@ class _HomeScreenState extends State<HomeScreen> {
             } else if (state is GetProductSuccess) {}
           }, builder: (context, state) {
             List<Product> products = GetProductCubit.get(context).productsShown;
-            return Column(
-              children: [
-                Expanded(
-                  child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: GridView.custom(
-                        controller: _scrollController,
-                        gridDelegate: SliverWovenGridDelegate.count(
-                          crossAxisCount: 2,
-                          pattern: [
-                            const WovenGridTile(5 / 7),
-                            const WovenGridTile(
-                              5 / 7,
-                              crossAxisRatio: 0.9,
-                              alignment: AlignmentDirectional.centerEnd,
-                            ),
-                          ],
-                        ),
-                        childrenDelegate: SliverChildBuilderDelegate(
-                          childCount: products.length,
-                          (context, index) {
-                            return ProductTile(product: products[index]);
-                          },
-                        ),
-                      )),
+            if (state is GetProductLoading) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.black,
                 ),
-                if (products.length <
-                        GetProductCubit.get(context).products.length &&
-                    needToLoad &&
-                    GetProductCubit.get(context).searchActive == false)
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CircularProgressIndicator(
-                      color: Colors.black,
-                    ),
-                  )
-              ],
-            );
+              );
+            } else {
+              return Column(
+                children: [
+                  Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: GridView.custom(
+                          controller: _scrollController,
+                          gridDelegate: SliverWovenGridDelegate.count(
+                            crossAxisCount: 2,
+                            pattern: [
+                              const WovenGridTile(5 / 7),
+                              const WovenGridTile(
+                                5 / 7,
+                                crossAxisRatio: 0.9,
+                                alignment: AlignmentDirectional.centerEnd,
+                              ),
+                            ],
+                          ),
+                          childrenDelegate: SliverChildBuilderDelegate(
+                            childCount: products.length,
+                            (context, index) {
+                              return ProductTile(product: products[index]);
+                            },
+                          ),
+                        )),
+                  ),
+                  if (products.length <
+                          GetProductCubit.get(context).products.length &&
+                      needToLoad &&
+                      GetProductCubit.get(context).searchActive == false)
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                    )
+                ],
+              );
+            }
           })),
     );
   }
