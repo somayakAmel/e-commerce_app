@@ -20,13 +20,14 @@ class LoginCubit extends Cubit<LoginState> {
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
       saveUser(value.user!.uid);
-      loadingState = false;
       emit(LoginSuccess());
       changeLoadingState();
     }).catchError((e) {
+      print(e.toString());
       changeLoadingState();
-
-      Validator.firebaseLoginValidator(e);
+      emit(LoginFailure(
+        message: Validator.firebaseLoginValidator(e.code),
+      ));
     });
   }
 
@@ -42,6 +43,7 @@ class LoginCubit extends Cubit<LoginState> {
       emit(SignOutLoading());
       await FirebaseAuth.instance.signOut();
       CacheHelper.removeData(key: "uId");
+
       emit(SignOutSuccess());
     } catch (e) {
       emit(SignOutFailure());

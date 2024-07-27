@@ -15,93 +15,120 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(
-                width: 5,
-              ),
-              const Text("Cart",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 21,
-                      fontWeight: FontWeight.w500)),
-              const Spacer(),
-              IconButton(
-                  onPressed: () {
-                    if (CartCubit.get(context).items.isNotEmpty) {
-                      CustomSimpleDialog.showCustomDialog(context, "Clear", () {
-                        CartCubit.get(context).clearCart();
-                        Navigator.pop(context);
-                      }, "Clear",
-                          "'Are you sure you want to clear your cart?'");
-                    } else {
-                      showToast(context, "Your cart is empty",
-                          ToastificationType.warning);
-                    }
-                  },
-                  icon: const Icon(Icons.delete, color: Colors.black)),
-              const SizedBox(
-                width: 5,
-              )
-            ],
-          ),
-        ),
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        toolbarHeight: 30,
-      ),
-      body: BlocConsumer<CartCubit, CartState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          List<CartItemModel> cartItems = CartCubit.get(context).items;
-          if (state is CartEmpty || state is CartInitial && cartItems.isEmpty) {
-            return Center(
-              child: Image.asset("assets/images/empty.png"),
-            );
-          } else if (state is CartUpdated || cartItems.isNotEmpty) {
-            return Column(
+        appBar: AppBar(
+          title: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const SizedBox(
-                  height: 20,
+                  width: 5,
                 ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                            itemCount: cartItems.length,
-                            itemBuilder: (context, index) {
-                              return CartItem(item: cartItems[index]);
-                            }),
-                      ),
-                      defaultButton(
-                        background: Colors.black,
-                        radius: 20,
-                        width: 300,
-                        text:
-                            "\$${CartCubit.get(context).totalPrice.truncate()}  Check Out Now",
-                        fontSize: 20,
-                        onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.payment);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                const Text("Cart",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 21,
+                        fontWeight: FontWeight.w500)),
+                const Spacer(),
+                IconButton(
+                    onPressed: () {
+                      if (CartCubit.get(context).items.isNotEmpty) {
+                        CustomSimpleDialog.showCustomDialog(context, "Clear",
+                            () {
+                          CartCubit.get(context).clearCart();
+                          Navigator.pop(context);
+                        }, "Clear",
+                            "'Are you sure you want to clear your cart?'");
+                      } else {
+                        showToast(context, "Your cart is empty",
+                            ToastificationType.warning);
+                      }
+                    },
+                    icon: const Icon(Icons.delete, color: Colors.black)),
+                const SizedBox(
+                  width: 5,
+                )
               ],
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+            ),
+          ),
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          toolbarHeight: 30,
+        ),
+        body: BlocConsumer<CartCubit, CartState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            List<CartItemModel> cartItems = CartCubit.get(context).items;
+            if (state is CartEmpty ||
+                state is CartInitial && cartItems.isEmpty) {
+              return Center(
+                child: Image.asset("assets/images/empty.png"),
+              );
+            } else if (state is CartUpdated || cartItems.isNotEmpty) {
+              return Column(
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                              itemCount: cartItems.length,
+                              itemBuilder: (context, index) {
+                                return CartItem(item: cartItems[index]);
+                              }),
+                        ),
+                        defaultButton(
+                          background: Colors.black,
+                          radius: 20,
+                          width: 300,
+                          text:
+                              "\$${CartCubit.get(context).totalPrice.truncate()}  Check Out Now",
+                          fontSize: 20,
+                          onPressed: () {
+                            CustomSimpleDialog.showCustomDialog(
+                              context,
+                              "Payment Method",
+                              () {
+                                Navigator.pushNamed(
+                                    context,
+                                    arguments: CartCubit.get(context)
+                                        .totalPrice
+                                        .toInt(),
+                                    AppRoutes.payment);
+                              },
+                              "Visa",
+                              "Choose your payment method",
+                              cancelText: "Cache",
+                              cancel: () {
+                                CartCubit.get(context).uploadOrder();
+                                CartCubit.get(context).clearCart();
+                                Navigator.pop(context);
+                                showToast(context, "Cash on delivery",
+                                    ToastificationType.info,
+                                    timer: 5);
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
       ),
     );
   }

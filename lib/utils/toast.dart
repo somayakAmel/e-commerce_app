@@ -1,11 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
-void showToast(BuildContext context, String text, ToastificationType type) {
+void showToast(BuildContext context, String text, ToastificationType type,
+    {int timer = 2}) {
   toastification.show(
     context: context,
     title: Text(text),
-    autoCloseDuration: const Duration(seconds: 2),
+    autoCloseDuration: Duration(seconds: timer),
     type: type,
     borderRadius: BorderRadius.circular(15),
     style: ToastificationStyle.flat,

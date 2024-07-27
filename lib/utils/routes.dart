@@ -45,7 +45,11 @@ class AppRoutes {
       case favorite:
         return MaterialPageRoute(builder: (_) => const FavoriteScreen());
       case payment:
-        return MaterialPageRoute(builder: (_) => const PaymentScreen());
+        int totalPrice = settings.arguments as int;
+        return MaterialPageRoute(
+            builder: (_) => PaymentScreen(
+                  totalPrice: totalPrice,
+                ));
 
       default:
         return MaterialPageRoute(

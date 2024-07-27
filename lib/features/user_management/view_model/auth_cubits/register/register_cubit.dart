@@ -33,7 +33,8 @@ class RegisterCubit extends Cubit<RegisterState> {
     }).catchError((e) {
       changeLoadingState();
 
-      Validator.firebaseRegisterValidator(e);
+      emit(RegisterFailure(
+          message: Validator.firebaseRegisterValidator(e.code)));
     });
   }
 

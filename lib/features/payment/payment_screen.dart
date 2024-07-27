@@ -10,8 +10,8 @@ import 'custom_credit_card.dart';
 //import 'package:Auto_Shop/features/payment_feature/view/widgets/payment_widgets/payment_methods_list_view.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key});
-
+  const PaymentScreen({super.key, required this.totalPrice});
+  final int totalPrice;
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
 }
@@ -54,7 +54,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     background: Colors.black,
                     radius: 20,
                     width: 200,
-                    text: "\$100 Pay Now",
+                    text: "\$${widget.totalPrice} Pay Now",
                     fontSize: 20,
                     onPressed: () {
                       if (formKey.currentState!.validate()) {

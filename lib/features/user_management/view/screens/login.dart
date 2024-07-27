@@ -38,154 +38,159 @@ class LoginScreen extends StatelessWidget {
           progressIndicator: const CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
           ),
-          child: Scaffold(
-            body: Form(
-              key: formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 64.0),
-                      const Text(
-                        "Welcome Back",
-                        textAlign: TextAlign.end,
-                        style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      const Text(
-                        "We are excited to have you back",
-                        textAlign: TextAlign.end,
-                        style: TextStyle(
-                            fontSize: 16, height: 1.5, color: Colors.black54),
-                      ),
-                      const SizedBox(height: 32.0),
-                      buildEmailField(
-                        controller: emailController,
-                        validator: (Validator.emailValidator),
-                      ),
-                      const SizedBox(height: 16.0),
-                      buildPasswordField(
-                        label: 'password',
-                        showPassword: LoginCubit.get(context).isPasswordVisible,
-                        controller: passwordController,
-                        validator: (Validator.passwordValidator),
-                        changePasswordVisibility: () =>
-                            LoginCubit.get(context).changePasswordVisibility(),
-                      ),
-                      const SizedBox(height: 16),
-                      buildSubmitButton(
-                        label: " Login ",
-                        textStyle:
-                            const TextStyle(color: Colors.white, fontSize: 16),
-                        bgColor: Colors.black,
-                        widthFactor: .5,
-                        onPressed: () {
-                          if (formKey.currentState?.validate() == true) {
-                            LoginCubit.get(context).userLogin(
-                              emailController.text,
-                              passwordController.text,
-                            );
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      const Row(
-                        children: [
-                          Expanded(
-                              child: Divider(
-                            height: 4,
-                            thickness: 2,
-                          )),
-                          SizedBox(height: 16),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
-                            child: Text(
-                              "Or Login with",
-                              style: TextStyle(
-                                color: Colors.black54,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                              child: Divider(
-                            height: 4,
-                            thickness: 2,
-                          )),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: buildOptionButton(
-                          src: 'google',
-                          onTap: () async {
-                            var value = await LoginCubit.get(context)
-                                .signInWithGoogle();
-                            var uId = value.user!.uid;
-                            CacheHelper.saveData(key: "uId", value: uId);
+          child: PopScope(
+            canPop: false,
+            child: Scaffold(
+              body: Form(
+                key: formKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 64.0),
+                        const Text(
+                          "Welcome Back",
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                              fontSize: 28,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const Text(
+                          "We are excited to have you back",
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                              fontSize: 16, height: 1.5, color: Colors.black54),
+                        ),
+                        const SizedBox(height: 32.0),
+                        buildEmailField(
+                          controller: emailController,
+                          validator: (Validator.emailValidator),
+                        ),
+                        const SizedBox(height: 16.0),
+                        buildPasswordField(
+                          label: 'password',
+                          showPassword:
+                              LoginCubit.get(context).isPasswordVisible,
+                          controller: passwordController,
+                          validator: (Validator.passwordValidator),
+                          changePasswordVisibility: () =>
+                              LoginCubit.get(context)
+                                  .changePasswordVisibility(),
+                        ),
+                        const SizedBox(height: 16),
+                        buildSubmitButton(
+                          label: " Login ",
+                          textStyle: const TextStyle(
+                              color: Colors.white, fontSize: 16),
+                          bgColor: Colors.black,
+                          widthFactor: .5,
+                          onPressed: () {
+                            if (formKey.currentState?.validate() == true) {
+                              LoginCubit.get(context).userLogin(
+                                emailController.text,
+                                passwordController.text,
+                              );
+                            }
                           },
                         ),
-                      ),
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: const TextSpan(
-                          style: TextStyle(height: 1.5),
+                        const SizedBox(height: 16),
+                        const Row(
                           children: [
-                            TextSpan(
-                              text: "By logging, you agree to our",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
+                            Expanded(
+                                child: Divider(
+                              height: 4,
+                              thickness: 2,
+                            )),
+                            SizedBox(height: 16),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                "Or Login with",
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                ),
                               ),
                             ),
-                            TextSpan(
-                              text: " Terms & Conditions",
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 17,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " \nand ",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                              ),
-                            ),
-                            TextSpan(
-                              text: "Privacy Policy.",
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 17,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            Expanded(
+                                child: Divider(
+                              height: 4,
+                              thickness: 2,
+                            )),
                           ],
                         ),
-                      ),
-                      const SizedBox(height: 64),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Don't have an account?"),
-                          buildTextButton(
-                              label: "Register",
-                              onPressed: () {
-                                Navigator.pushReplacementNamed(
-                                  context,
-                                  AppRoutes.register,
-                                );
-                              }),
-                        ],
-                      )
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: buildOptionButton(
+                            src: 'google',
+                            onTap: () async {
+                              var value = await LoginCubit.get(context)
+                                  .signInWithGoogle();
+                              var uId = value.user!.uid;
+                              CacheHelper.saveData(key: "uId", value: uId);
+                            },
+                          ),
+                        ),
+                        RichText(
+                          textAlign: TextAlign.center,
+                          text: const TextSpan(
+                            style: TextStyle(height: 1.5),
+                            children: [
+                              TextSpan(
+                                text: "By logging, you agree to our",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              TextSpan(
+                                text: " Terms & Conditions",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 17,
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: " \nand ",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              TextSpan(
+                                text: "Privacy Policy.",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 17,
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 64),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Don't have an account?"),
+                            buildTextButton(
+                                label: "Register",
+                                onPressed: () {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    AppRoutes.register,
+                                  );
+                                }),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

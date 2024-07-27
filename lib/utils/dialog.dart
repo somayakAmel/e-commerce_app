@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class CustomSimpleDialog {
   static void showCustomDialog(BuildContext context, String title,
-      Function() confirm, String okText, String text) {
+      Function() confirm, String okText, String text,
+      {String cancelText = "Cancel", Function()? cancel}) {
     showDialog(
         context: context,
         builder: (_) {
@@ -22,10 +23,11 @@ class CustomSimpleDialog {
             actions: <Widget>[
               defaultButton(
                   width: 100,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  text: "Cancel",
+                  onPressed: cancel ??
+                      () {
+                        Navigator.pop(context);
+                      },
+                  text: cancelText,
                   fontSize: 15,
                   background: Colors.black54,
                   radius: 20),
