@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce/features/shopping_cart/model/cart_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+
+import '../../../../utils/cache_helper.dart';
 // import 'package:uuid/uuid.dart';
 
 part 'cart_state.dart';
@@ -69,6 +71,7 @@ class CartCubit extends Cubit<CartState> {
     FirebaseFirestore.instance.collection("orders").add({
       "items": _items
           .map((item) => {
+                "uId": CacheHelper.getData(key: "uId"),
                 "id": item.id,
                 "title": item.title,
                 "price": item.price,

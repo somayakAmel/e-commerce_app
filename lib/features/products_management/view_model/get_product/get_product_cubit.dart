@@ -14,6 +14,7 @@ class GetProductCubit extends Cubit<GetProductState> {
   List<Product> products = [];
   List<Product> firstPartOfProducts = [];
   List<Product> productsShown = [];
+  bool searchActive = false;
 
   void getProducts() async {
     try {
@@ -34,7 +35,10 @@ class GetProductCubit extends Cubit<GetProductState> {
   void searchProductsList(value) {
     if (value.isEmpty) {
       productsShown = products;
+      searchActive = false;
+      emit(GetProductSuccess());
     } else {
+      searchActive = true;
       productsShown = products
           .where((element) =>
               element.name.toLowerCase().contains(value.toLowerCase()))
