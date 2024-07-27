@@ -23,7 +23,6 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginSuccess());
       changeLoadingState();
     }).catchError((e) {
-      print(e.toString());
       changeLoadingState();
       emit(LoginFailure(
         message: Validator.firebaseLoginValidator(e.code),

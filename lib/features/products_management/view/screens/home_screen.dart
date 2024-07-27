@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     needToLoad &&
                     GetProductCubit.get(context).searchActive == false)
                   const Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: CircularProgressIndicator(
                       color: Colors.black,
                     ),
